@@ -26,13 +26,18 @@ func First(query string, replicas ...Search) string {
 	return <-c
 }
 
+//Fetch the result
+func Fetch(query string) string {
+	return First("golang",
+		fakeSearch("replica 1"),
+		fakeSearch("replica 2"))
+}
+
 //main function of the repo
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	start := time.Now()
-	result := First("golang",
-		fakeSearch("replica 1"),
-		fakeSearch("replica 2"))
+	result := Fetch("golang")
 	elapsed := time.Since(start)
 	fmt.Println(result)
 	fmt.Println(elapsed)
